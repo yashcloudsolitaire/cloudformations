@@ -1,0 +1,35 @@
+Description: A sample template
+Resources:
+  CloudWatchAlarm:
+    Type: AWS::CloudWatch::Alarm
+    DeletionPolicy: Retain
+    Properties: 
+      AlarmActions: 
+        - !Ref MySNSTopic
+      OKActions: 
+        - !Ref MySNSTopic
+      AlarmDescription: 502 error.
+      AlarmName: TEST11
+      Namespace: AWS/ApplicationELB
+      MetricName: HTTPCode_ELB_5XX_Count
+      Period: 60
+      Statistic: Average
+      EvaluationPeriods: 1
+      DatapointsToAlarm: 1
+      ComparisonOperator: GreaterThanThreshold
+      Threshold: 0
+      TreatMissingData: 1
+      TreatMissingData: "notBreaching"
+  MySNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:       
+      TopicName: "SampleTopic8" 
+  MySubscription: 
+    Type: AWS::SNS::Subscription 
+    Properties: 
+      Endpoint: yash@cloudsolitaire.com
+      Protocol: email 
+      TopicArn: !Ref 'MySNSTopic'
+
+      
+      
